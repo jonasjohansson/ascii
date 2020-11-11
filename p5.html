@@ -73,8 +73,8 @@
       /*
   The size of generated ASCII graphics expressed in characters and lines.
 */
-      var asciiart_width = 180;
-      var asciiart_height = 90;
+      var asciiart_width = 120;
+      var asciiart_height = 40;
 
       /*
   Video capture device.
@@ -104,34 +104,19 @@
       /*
   Here we are trying to get access to the camera.
 */
-      function initCaptureDevice() {
-        try {
-          // myCapture = createCapture(VIDEO);
-          myCapture = createVideo("assets/runway_low.mp4");
-          myCapture.size(480, 270);
-          myCapture.elt.setAttribute("playsinline", "");
-          myCapture.elt.setAttribute("muted", "");
-          myCapture.elt.setAttribute("loop", "");
-          myCapture.elt.setAttribute("autoplay", "");
-          myCapture.hide();
-          console.log(
-            "[initCaptureDevice] capture ready. Resolution: " +
-              myCapture.width +
-              " " +
-              myCapture.height
-          );
-        } catch (_err) {
-          console.log("[initCaptureDevice] capture error: " + _err);
-        }
+
+      function preload() {
+        myCapture = createVideo("assets/runway_low.mp4");
+        myCapture.size(480, 270);
+        myCapture.elt.setAttribute("playsinline", "");
+        myCapture.elt.setAttribute("muted", "");
+        myCapture.elt.setAttribute("loop", "");
+        myCapture.elt.setAttribute("autoplay", "");
+        myCapture.hide();
       }
       function setup() {
         createCanvas(windowWidth, windowHeight); // we need some space...
-        initCaptureDevice(); // and access to the camera
-
-        window.onclick = () => {
-          myCapture.play();
-          playVideo = true;
-        };
+        myCapture.play();
         /*
     In this particular case the gfx helper should have dimensions the same as
     the target graphic.
@@ -177,7 +162,6 @@
 
           if (playVideo) {
             myCapture.loop();
-            console.log("S");
           }
           /*
       Let's prepare the image for conversion. Although the object derived from
@@ -196,7 +180,7 @@
       different values may have the best effect. And sometimes it is worth not
       to apply the effect of posterization on the image.
     */
-          gfx.filter(POSTERIZE, 3);
+          gfx.filter(POSTERIZE, 20);
           /*
       Here the processed image is converted to the ASCII art. The convert()
       function in this case is used with just one parameter (image we want to
@@ -250,14 +234,6 @@
     */
           background(255, 0, 0);
         }
-      }
-
-      function mouseReleased() {
-        /*
-    The flag controlling the display of the image coming from the camera is
-    switched by tap/click.
-  */
-        showOryginalImageFlag = !showOryginalImageFlag;
       }
 
       /*
