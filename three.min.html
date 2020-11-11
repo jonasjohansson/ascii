@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+      body {
+        /* background-color: white; */
+        /* filter: invert(1) */
+      }
+      table {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+      }
+      video {
+        visibility: hidden;
+        height: 0;
+        width: 0;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0; overflow: hidden">
+    <video
+      width="960"
+      height="540"
+      src="assets/runway_low.mp4"
+      loop
+      muted
+      autoplay
+      playsinline
+    ></video>
+    <script type="module">
+      import * as THREE from "https://threejs.org/build/three.module.js";
+      import { PLYLoader } from "https://threejs.org/examples/jsm/loaders/PLYLoader.js";
+      import { AsciiEffect } from "https://threejs.org/examples/jsm/effects/AsciiEffect.js";
+      import { TrackballControls } from "https://threejs.org/examples/jsm/controls/TrackballControls.js";
+      let camera, controls, scene, renderer, effect, video;
+      function init() {
+        ((camera = new THREE.PerspectiveCamera(
+          70,
+          window.innerWidth / window.innerHeight,
+          1,
+          1e3
+        )).position.z = 100),
+          ((scene = new THREE.Scene()).background = new THREE.Color(0, 0, 0)),
+          createVideo(),
+          (renderer = new THREE.WebGLRenderer()).setSize(
+            window.innerWidth,
+            window.innerHeight
+          ),
+          (effect = new AsciiEffect(renderer, " .:-+*=%@#", {
+            resolution: 0.05,
+            invert: !0,
+          })).setSize(window.innerWidth, window.innerHeight),
+          (effect.domElement.style.color = "white"),
+          (effect.domElement.style.backgroundColor = "white"),
+          document.body.appendChild(effect.domElement),
+          (controls = new TrackballControls(camera, effect.domElement)),
+          window.addEventListener("resize", onWindowResize, !1);
+      }
+      function createVideo() {
+        (video = document.querySelector("video")).play();
+        var e = new THREE.VideoTexture(video);
+        e.needsUpdate,
+          (e.minFilter = THREE.LinearFilter),
+          (e.magFilter = THREE.LinearFilter),
+          (e.format = THREE.RGBFormat),
+          (e.crossOrigin = "anonymous");
+        var n = new THREE.Mesh(
+          new THREE.PlaneBufferGeometry(200, 200),
+          new THREE.MeshBasicMaterial({ map: e })
+        );
+        scene.add(n);
+      }
+      function onWindowResize() {
+        (camera.aspect = window.innerWidth / window.innerHeight),
+          camera.updateProjectionMatrix(),
+          renderer.setSize(window.innerWidth, window.innerHeight),
+          effect.setSize(window.innerWidth, window.innerHeight);
+      }
+      function animate() {
+        requestAnimationFrame(animate), render();
+      }
+      function render() {
+        controls.update(), effect.render(scene, camera);
+      }
+      window.onload = () => {
+        init(), animate();
+      };
+    </script>
+  </body>
+</html>

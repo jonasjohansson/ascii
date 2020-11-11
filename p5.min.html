@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="js/p5.min.js"></script>
+    <script src="js//p5.dom.min.js"></script>
+    <script src="js/p5.asciiart.min.js"></script>
+    <script>
+      var myAsciiArt,
+        myCapture,
+        gfx,
+        ascii_arr,
+        asciiart_width = 180,
+        asciiart_height = 90,
+        showOryginalImageFlag = !1,
+        playVideo = !1;
+      function initCaptureDevice() {
+        try {
+          (myCapture = createVideo("assets/runway_low.mp4")).size(480, 270),
+            myCapture.elt.setAttribute("playsinline", ""),
+            myCapture.elt.setAttribute("muted", ""),
+            myCapture.elt.setAttribute("loop", ""),
+            myCapture.elt.setAttribute("autoplay", ""),
+            myCapture.hide(),
+            console.log(
+              "[initCaptureDevice] capture ready. Resolution: " +
+                myCapture.width +
+                " " +
+                myCapture.height
+            );
+        } catch (e) {
+          console.log("[initCaptureDevice] capture error: " + e);
+        }
+      }
+      function setup() {
+        createCanvas(windowWidth, windowHeight),
+          initCaptureDevice(),
+          (window.onclick = () => {
+            myCapture.play(), (playVideo = !0);
+          }),
+          (gfx = createGraphics(asciiart_width, asciiart_height)).pixelDensity(
+            1
+          ),
+          (myAsciiArt = new AsciiArt(this)).printWeightTable(),
+          textAlign(CENTER, CENTER),
+          textFont("monospace", 8),
+          textStyle(NORMAL),
+          noStroke(),
+          fill(0),
+          frameRate(30);
+      }
+      function draw() {
+        null != myCapture
+          ? (background(255),
+            playVideo && (myCapture.loop(), console.log("S")),
+            gfx.background(255),
+            tint(255, 0),
+            gfx.image(myCapture, 0, 0, gfx.width, gfx.height),
+            gfx.filter(POSTERIZE, 3),
+            (ascii_arr = myAsciiArt.convert(gfx)),
+            showOryginalImageFlag && image(myCapture, 0, 0, width, height),
+            myAsciiArt.typeArray2d(ascii_arr, this))
+          : background(255, 0, 0);
+      }
+      function mouseReleased() {
+        showOryginalImageFlag = !showOryginalImageFlag;
+      }
+      typeArray2d = function (e, t, a, i, r, l) {
+        if (null !== e)
+          if (void 0 !== e) {
+            switch (arguments.length) {
+              case 2:
+                (a = 0), (i = 0), (r = width), (l = height);
+                break;
+              case 4:
+                (r = width), (l = height);
+                break;
+              case 6:
+                break;
+              default:
+                return void console.log(
+                  "[typeArray2d] bad number of arguments: " + arguments.length
+                );
+            }
+            if (null !== t.canvas)
+              if (void 0 !== t.canvas) {
+                var n = t.canvas.getContext("2d");
+                if (null !== n)
+                  if (void 0 !== n)
+                    for (
+                      var o = r / e.length,
+                        s = l / e[0].length,
+                        c = a + 0.5 * o,
+                        d = i + 0.5 * s,
+                        g = 0;
+                      g < e[0].length;
+                      g++
+                    )
+                      for (var u = 0; u < e.length; u++)
+                        n.fillText(e[u][g], c + u * o, d + g * s);
+                  else
+                    console.log(
+                      "[typeArray2d] _dst canvas 2d context is undefined"
+                    );
+                else
+                  console.log("[typeArray2d] _dst canvas 2d context is null");
+              } else console.log("[typeArray2d] _dst.canvas === undefined");
+            else console.log("[typeArray2d] _dst.canvas === null");
+          } else console.log("[typeArray2d] _arr2d === undefined");
+        else console.log("[typeArray2d] _arr2d === null");
+      };
+    </script>
+  </head>
+  <body style="margin: 0"></body>
+</html>
