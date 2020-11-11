@@ -34,9 +34,9 @@
           createCanvas(windowWidth, round(windowHeight * (1 / proportion)));
         }
         window.onclick = function () {
-          myCapture.play();
+          camera.play();
         };
-        myCapture.play();
+        camera.play();
         playVideo = true;
         //create spacers to ensure the image is not skewed
         for (let i = 0; i < sampleSize / 10; i++) {
