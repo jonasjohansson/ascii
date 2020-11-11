@@ -116,7 +116,10 @@
       }
       function setup() {
         createCanvas(windowWidth, windowHeight); // we need some space...
-        myCapture.play();
+        window.onclick = function () {
+          myCapture.play();
+          playVideo = true;
+        };
         /*
     In this particular case the gfx helper should have dimensions the same as
     the target graphic.
