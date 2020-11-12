@@ -40,7 +40,7 @@
         .then(function (dataUrl) {
           domImage = new Image();
           domImage.src = dataUrl;
-          node.style.opacity = 0.1;
+          node.style.opacity = 0;
 
           init();
           animate();
@@ -63,7 +63,7 @@
 
         var texture = new THREE.TextureLoader().load(domImage.src);
         var videoMesh = new THREE.Mesh(
-          new THREE.PlaneBufferGeometry(750, 1125),
+          new THREE.PlaneBufferGeometry(375, 562),
           new THREE.MeshStandardMaterial({ map: texture })
         );
         scene.add(videoMesh);
@@ -77,7 +77,7 @@
         effect = new AsciiEffect(renderer, " .:-+*=%@#", {
           resolution: 0.15,
           invert: false,
-          color: true,
+          color: false,
         });
         effect.setSize(window.innerWidth, window.innerHeight);
         effect.domElement.style.color = "white";
