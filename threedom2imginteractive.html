@@ -75,8 +75,9 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         effect = new AsciiEffect(renderer, " .:-+*=%@#", {
-          resolution: 0.1,
+          resolution: 0.15,
           invert: false,
+          color: true,
         });
         effect.setSize(window.innerWidth, window.innerHeight);
         effect.domElement.style.color = "white";
