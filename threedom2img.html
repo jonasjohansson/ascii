@@ -7,7 +7,7 @@
         /* background-color: white; */
         /* filter: invert(1) */
       }
-      table {
+      table, canvas {
         position: absolute;
         top: 0;
         left: 0;
@@ -15,16 +15,11 @@
         bottom: 0;
         z-index: 10;
       }
-      video {
-        visibility: hidden;
-        height: 0;
-        width: 0;
-      }
     </style>
   </head>
 
   <body style="margin: 0; overflow: hidden">
-    <div id="node">
+    <div id="node" style="background-color:white;">
       <h1>Acne Studios</h1>
       <img src="assets/model.jpg" />
     </div>
@@ -44,7 +39,7 @@
         .then(function (dataUrl) {
           domImage = new Image();
           domImage.src = dataUrl;
-          node.style.opacity = 0.1;
+          node.style.opacity = 0.5;
 
           init();
           animate();
@@ -63,16 +58,16 @@
         camera.position.z = 500;
 
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0, 0, 0);
-
+        scene.background = new THREE.Color(255, 255, 255);
+        
         createVideo();
 
         renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         effect = new AsciiEffect(renderer, " .:-+*=%@#", {
-          resolution: 0.15,
-          invert: true,
+          resolution: 0.1,
+          invert: false,
         });
         effect.setSize(window.innerWidth, window.innerHeight);
         effect.domElement.style.color = "white";
