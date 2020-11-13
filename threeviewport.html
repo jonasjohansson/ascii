@@ -85,6 +85,8 @@
         var width = height * aspect;
 
         var texture = new THREE.TextureLoader().load(domImage.src);
+        // texture.offset.x = 0.01
+        texture.repeat.set(1.1, 1)
         videoMesh = new THREE.Mesh(
           new THREE.PlaneBufferGeometry(width, height),
           new THREE.MeshStandardMaterial({ map: texture, transparent: true })
@@ -98,7 +100,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setClearColor(0xffffff, 0);
         effect = new AsciiEffect(renderer, " .:-+*=%@#", {
-          resolution: 0.15,
+          resolution: 0.1,
           invert: false,
           color: false,
         });
