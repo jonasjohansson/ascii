@@ -1,0 +1,141 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="js/dom-to-image.js"></script>
+    <style>
+      body {
+        /* background-color: white; */
+        /* filter: invert(1) */
+      }
+      table,
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+        pointer-events: none;
+        background-color: white;
+      }
+      #node {
+        background-image: url("assets/homeBase.jpg");
+        background-size: 100% 100%;
+        z-index: -1;
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0; overflow: hidden">
+    <div class="overlay" id="bg"></div>
+    <div class="overlay" id="node"></div>
+    <script type="module">
+      import * as THREE from "https://threejs.org/build/three.module.js";
+      import { PLYLoader } from "https://threejs.org/examples/jsm/loaders/PLYLoader.js";
+      import { AsciiEffect } from "https://threejs.org/examples/jsm/effects/AsciiEffect.js";
+      //   import { FlyControls } from "https://threejs.org/examples/jsm/controls/FlyControls.js";
+      //   import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
+      import { TrackballControls } from "https://threejs.org/examples/jsm/controls/TrackballControls.js";
+
+      let camera, controls, scene, renderer, effect;
+      let domImage, light, videoMesh;
+
+      domtoimage
+        .toPng(node)
+        .then(function (dataUrl) {
+          domImage = new Image();
+          domImage.src = dataUrl;
+          node.style.opacity = 0.1;
+
+          init();
+          animate();
+        })
+        .catch(function (error) {
+          console.error("oops, something went wrong!", error);
+        });
+
+      function init() {
+        camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          2000
+        );
+        camera.position.z = 1;
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(255, 255, 255);
+
+        var vFOV = (camera.fov * Math.PI) / 180;
+
+        // Get the visible height
+        var height = 2 * Math.tan(vFOV / 2) * 1;
+
+        // If we want a width that follows the aspect ratio of the camera, then get the aspect ratio and multiply by the height.
+        var aspect = window.innerWidth / window.innerHeight;
+        var width = height * aspect;
+
+        var texture = new THREE.TextureLoader().load(domImage.src);
+        videoMesh = new THREE.Mesh(
+          new THREE.PlaneBufferGeometry(width, height),
+          new THREE.MeshStandardMaterial({ map: texture, transparent: true })
+        );
+        scene.add(videoMesh);
+
+        light = new THREE.AmbientLight(0xffffff);
+        scene.add(light);
+
+        renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0xffffff, 0);
+        effect = new AsciiEffect(renderer, " .:-+*=%@#", {
+          resolution: 0.15,
+          invert: false,
+          color: false,
+        });
+        effect.setSize(window.innerWidth, window.innerHeight);
+        effect.domElement.style.color = "white";
+        effect.domElement.style.backgroundColor = "white";
+
+        document.body.appendChild(effect.domElement);
+        // document.body.appendChild(renderer.domElement);
+
+        controls = new TrackballControls(camera, effect.domElement);
+
+        window.addEventListener("resize", onWindowResize, false);
+        window.addEventListener("mousemove", (e) => {
+          light.intensity = (e.clientX / window.innerWidth) * 20;
+          videoMesh.material.opacity = 1 - e.clientX / window.innerWidth;
+          effect.domElement.style.opacity = 1 - e.clientX / window.innerWidth;
+          bg.style.opacity = 1 - e.clientX / window.innerWidth;
+        });
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        effect.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        render();
+      }
+
+      function render() {
+        // controls.update();
+        effect.render(scene, camera);
+      }
+    </script>
+  </body>
+</html>
