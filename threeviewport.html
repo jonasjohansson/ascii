@@ -55,21 +55,9 @@
 
       window.addEventListener(
         "message",
-        (data) => {
-          console.log(data)
-          const html = document.createRange().createContextualFragment(data);
-          domtoimage
-            .toPng(html)
-            .then(function (dataUrl) {
-              domImage = new Image();
-              domImage.src = dataUrl;
-              node.style.opacity = 0;
-              init();
-              animate();
-            })
-            .catch(function (error) {
-              console.error("oops, something went wrong!", error);
-            });
+        (dataUrl) => {
+          domImage = new Image();
+          domImage.src = dataUrl;
         },
         false
       );
