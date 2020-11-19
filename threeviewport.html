@@ -54,10 +54,9 @@
 
       window.addEventListener(
         "message",
-        (dataUrl) => {
-          console.log(dataUrl);
+        (data) => {
           domImage = new Image();
-          domImage.src = dataUrl;
+          domImage.src = data.message;
         },
         false
       );
