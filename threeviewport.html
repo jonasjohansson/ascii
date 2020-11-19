@@ -54,11 +54,11 @@
 
       window.addEventListener(
         "message",
-        (data) => {
-          console.log(data);
-          console.log(data.message);
+        (msg) => {
+          console.log(msg.data);
+          console.log(msg.data.message);
           domImage = new Image();
-          domImage.src = data.message;
+          domImage.src = msg.data.message;
         },
         false
       );
