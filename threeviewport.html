@@ -54,16 +54,10 @@
 
       window.addEventListener(
         "message",
-        (blob) => {
-          var reader = new FileReader();
-          reader.onloadend = function () {
-            var string = reader.result;
-            var buffer = Base64.encode(string);
-            var data = "data:image/png;base64," + buffer;
-            domImage = new Image();
-            domImage.src = data;
-          };
-          reader.readAsBinaryString(blob);
+        (dataUrl) => {
+          console.log(dataUrl);
+          domImage = new Image();
+          domImage.src = dataUrl;
         },
         false
       );
