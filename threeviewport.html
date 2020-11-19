@@ -56,9 +56,10 @@
         "message",
         (msg) => {
           console.log(msg.data);
-          console.log(msg.data.message);
           domImage = new Image();
           domImage.src = msg.data.message;
+          init();
+          animate();
         },
         false
       );
