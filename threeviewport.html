@@ -57,9 +57,9 @@
         "message",
         (data) => {
           console.log(data)
-          var node = data
+          const html = document.createRange().createContextualFragment(data);
           domtoimage
-            .toPng(node)
+            .toPng(html)
             .then(function (dataUrl) {
               domImage = new Image();
               domImage.src = dataUrl;
