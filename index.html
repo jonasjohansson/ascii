@@ -78,15 +78,11 @@
         if (myCapture === null) return;
 
         gfx.background(255);
-        gfx.tint(255, map(mouseX, 0, width, 255, 0));
+        let distanceToCenter = int(dist(mouseX, mouseY, width / 2, height / 2));
+        let distanceVal = map(distanceToCenter, 0, width / 2, 1, 0)
+        gfx.tint(255, distanceVal * 255);
         gfx.image(myCapture, 0, 0, gfx.width, gfx.height);
-        cnv.elt.parentNode.style.opacity = map(
-          mouseX,
-          width / 1.1,
-          width,
-          1,
-          0
-        );
+        cnv.elt.parentNode.style.opacity = distanceVal
         gfx.filter(POSTERIZE, 20);
         ascii_arr = myAsciiArt.convert(gfx);
         if (showOryginalImageFlag) image(myCapture, 0, 0, width, height);
