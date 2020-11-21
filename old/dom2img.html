@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="js/dom-to-image.js"></script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden">
+    <div id="node">
+      hello<img
+        src="https://www.acnestudios.com/on/demandware.static/-/Library-Sites-acne/default/dw2294ce46/home/2020/w47/woman-d.jpg"
+      />
+    </div>
+    <script>
+      var node = document.querySelector("#node");
+      node.style.opacity = 0.1;
+      domtoimage
+        .toPng(node)
+        .then(function (dataUrl) {
+          var img = new Image();
+          img.src = dataUrl;
+          document.body.appendChild(img);
+          console.log(img);
+        })
+        .catch(function (error) {
+          console.error("oops, something went wrong!", error);
+        });
+    </script>
+  </body>
+</html>
