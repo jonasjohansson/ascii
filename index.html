@@ -80,7 +80,8 @@
         gfx.background(255);
         let distanceToCenter = int(dist(mouseX, mouseY, width / 2, height / 2));
         let distanceVal = map(distanceToCenter, 0, width / 2, 1, 0)
-        gfx.tint(255, distanceVal * 255);
+        let tintVal = map(sin(millis()/2000),-1,1,0,255)
+        gfx.tint(tintVal, distanceVal * 255);
         gfx.image(myCapture, 0, 0, gfx.width, gfx.height);
         cnv.elt.parentNode.style.opacity = distanceVal
         gfx.filter(POSTERIZE, 20);

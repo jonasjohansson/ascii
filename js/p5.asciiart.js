@@ -115,7 +115,7 @@ p5.prototype.AsciiArt = function (_sketch, _fontName, _fontSize, _textStyle) {
   */
   this.createWeightTable();
 
-  this.chars = " .:-+*=%#";
+  this.chars = " .:-+*=%# ";
   this.__weightTable = [];
 
   for (let i = 0; i < this.chars.length; i++) {
