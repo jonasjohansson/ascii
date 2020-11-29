@@ -12,23 +12,25 @@ img {
   width: 100%;
   height: 100%;
 }
-#ascii.animate {
-  animation: fade 1s;
-}
 img {
   object-fit: contain;
 }
 #root {
   z-index: -1;
 }
-
+.animate #ascii {
+  animation: fade 1s;
+}
+.animate #root {
+  /* filter: brightness(0.4); */
+}
 @keyframes fade {
   0% {
     filter: contrast(1);
     opacity: 1;
   }
   70% {
-    /* opacity: 1; */
+    opacity: 1;
   }
   100% {
     filter: contrast(0);

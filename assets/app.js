@@ -59,10 +59,10 @@ window.onload = function () {
   captureImage(document.getElementById("root"));
   startUI();
   ascii.el.addEventListener("mousedown", function () {
-    ascii.el.classList.add("animate");
+    document.body.classList.add("animate");
   });
   ascii.el.addEventListener("mouseup", function () {
-    ascii.el.classList.remove("animate");
+    document.body.classList.remove("animate");
   });
 };
 
