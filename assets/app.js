@@ -115,7 +115,7 @@ function draw() {
   let distanceVal = map(distanceToCenter, 0, width / 2, 255, 0);
 
   var sine = sin(millis() / 4000);
-  let tintVal = int(map(sine, -1, 1, 64, 255));
+  let tintVal = int(map(sine, -1, 1, 32, 255));
 
   // print(distanceVal, tintVal);
 
