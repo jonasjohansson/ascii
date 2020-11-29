@@ -131,7 +131,7 @@ function windowResized() {
 
 function startUI() {
   const pane = new Tweakpane({
-    title: "Ascii Settings",
+    title: "ASCII Settings",
   });
 
   const f1 = pane.addFolder({
