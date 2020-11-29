@@ -13,7 +13,7 @@ const ascii = {
 
 const _display = {
   w: 120,
-  h: 80,
+  h: 60,
   min: 1,
   max: 160,
   density: 1,
@@ -239,9 +239,13 @@ function startUI() {
     _range.chars = PARAMS.rangeChars;
     _posterize.val = PARAMS.posterize;
     ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
-    style.innerHTML = `html img { object-fit: ${PARAMS.displayObjectFit}; }`;
-
     if (cnv.elt !== null) cnv.elt.parentNode.removeChild(cnv.elt);
-    captureImage(document.getElementById("root"));
+    if (_display.objectFit !== PARAMS.displayObjectFit) {
+      _display.objectFit = PARAMS.displayObjectFit;
+      style.innerHTML = `html img { object-fit: ${PARAMS.displayObjectFit}; }`;
+      captureImage(document.getElementById("root"));
+    } else {
+      setup();
+    }
   });
 }
