@@ -72,6 +72,7 @@ p5.prototype.AsciiArt = function (
   _rangeMax = 126,
   _rangeUsePreset = false,
   _rangeChars = "",
+  _displayInvert = false,
   _textStyle
 ) {
   /*
@@ -110,7 +111,7 @@ p5.prototype.AsciiArt = function (
     larger area will be assigned to lighter pixels, but we can invert this
     behaviour if we want to.
   */
-  this.invertBrightnessFlag = false;
+  this.invertBrightnessFlag = _displayInvert;
   /*
     Here we are handling all four variants of the pseudoclass constructor.
   */

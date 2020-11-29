@@ -14,6 +14,7 @@ const _display = {
   min: 1,
   max: 160,
   density: 1,
+  invert: false,
   blendMode: "normal",
   animate: false,
 };
@@ -28,7 +29,7 @@ const _range = {
 };
 
 const _posterize = {
-  val: 4,
+  val: 10,
   min: 2,
   max: 20,
 };
@@ -39,6 +40,7 @@ const PARAMS = {
   displayWidth: _display.w,
   displayHeight: _display.h,
   displayDensity: _display.density,
+  displayInvert: _display.invert,
   displayBlendMode: _display.blendMode,
   displayAnimate: _display.animate,
   rangeStart: _range.a,
@@ -84,7 +86,8 @@ function setup() {
     _range.a,
     _range.b,
     _range.usePreset,
-    _range.chars
+    _range.chars,
+    _display.invert
   );
   myAsciiArt.printWeightTable();
   noStroke();
@@ -153,6 +156,10 @@ function startUI() {
     step: 1,
   });
 
+  f1.addInput(PARAMS, "displayInvert", {
+    label: "invert",
+  });
+
   f1.addInput(PARAMS, "displayDensity", {
     label: "density",
     min: 0.1,
@@ -212,6 +219,7 @@ function startUI() {
     _display.w = PARAMS.displayWidth;
     _display.h = PARAMS.displayHeight;
     _display.density = PARAMS.displayDensity;
+    _display.invert = PARAMS.displayInvert;
     _range.a = PARAMS.rangeStart;
     _range.b = PARAMS.rangeEnd;
     _range.usePreset = PARAMS.rangeUsePreset;
