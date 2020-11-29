@@ -12,9 +12,26 @@ img {
   width: 100%;
   height: 100%;
 }
+#ascii.animate {
+  animation: fade 2s infinite;
+}
 img {
   object-fit: contain;
 }
 #root {
   z-index: -1;
+}
+
+@keyframes fade {
+  0% {
+    filter: contrast(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    filter: contrast(0);
+    opacity: 0;
+  }
 }

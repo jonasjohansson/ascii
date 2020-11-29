@@ -11,8 +11,8 @@ const ascii = {
 };
 
 const _display = {
-  w: 120,
-  h: 60,
+  w: 160,
+  h: 80,
   min: 1,
   max: 160,
   density: 1,
@@ -58,6 +58,12 @@ window.onload = function () {
   ascii.el = document.getElementById("ascii");
   captureImage(document.getElementById("root"));
   startUI();
+  ascii.el.addEventListener("mousedown", function () {
+    ascii.el.classList.add("animate");
+  });
+  ascii.el.addEventListener("mouseup", function () {
+    ascii.el.classList.remove("animate");
+  });
 };
 
 const captureImage = (el) => {
