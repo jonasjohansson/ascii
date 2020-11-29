@@ -1,5 +1,4 @@
-var cnv;
-var myCapture = null;
+var cnv, gfx, myCapture;
 var style = document.createElement("style");
 var ref = document.querySelector("script");
 ref.parentNode.insertBefore(style, ref);
@@ -78,7 +77,8 @@ function preload() {
 }
 
 function setup() {
-  if (myCapture === null) return;
+  if (myCapture === undefined) return;
+  if (cnv !== undefined) cnv.elt.parentNode.removeChild(cnv.elt);
   cnv = createCanvas(windowWidth, windowHeight);
   cnv.parent(ascii.el);
   gfx = createGraphics(_display.w, _display.h);
@@ -100,9 +100,8 @@ function setup() {
 }
 
 function draw() {
-  if (myCapture === null) return;
-
   background(255);
+  if (myCapture === undefined) return;
 
   let distanceToCenter = int(dist(mouseX, mouseY, width / 2, height / 2));
   distanceToCenter = constrain(distanceToCenter, 0, width / 2);
@@ -239,7 +238,6 @@ function startUI() {
     _range.chars = PARAMS.rangeChars;
     _posterize.val = PARAMS.posterize;
     ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
-    if (cnv.elt !== null) cnv.elt.parentNode.removeChild(cnv.elt);
     if (_display.objectFit !== PARAMS.displayObjectFit) {
       _display.objectFit = PARAMS.displayObjectFit;
       style.innerHTML = `html img { object-fit: ${PARAMS.displayObjectFit}; }`;
