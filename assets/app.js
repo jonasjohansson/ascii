@@ -174,9 +174,11 @@ function startUI() {
     label: "blending mode",
     options: {
       normal: "normal",
-      screen: "screen",
       colorDodge: "color-dodge",
+      hardLight: "hard-light",
+      lighten: "lighten",
       luminosity: "luminosity",
+      screen: "screen",
     },
   });
 
