@@ -19,7 +19,9 @@ img {
   z-index: -1;
 }
 .animate #ascii {
-  animation: fade 1s forwards;
+  animation-name: fade;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
 }
 .animate #root {
   /* filter: brightness(0.4); */
@@ -30,7 +32,7 @@ img {
     opacity: 1;
   }
   100% {
-    filter: contrast(0);
+    filter: contrast(0.5);
     opacity: 0;
   }
 }

@@ -37,6 +37,12 @@ const _posterize = {
   max: 20,
 };
 
+const _fade = {
+  duration: 1,
+  min: 0,
+  max: 4,
+};
+
 const fontSize = 12;
 
 const PARAMS = {
@@ -52,6 +58,7 @@ const PARAMS = {
   rangeUsePreset: _range.usePreset,
   rangeChars: _range.chars,
   posterize: _posterize.val,
+  fadeDuration: _fade.duration,
 };
 
 window.onload = function () {
@@ -232,6 +239,12 @@ function startUI() {
     step: 1,
   });
 
+  f3.addInput(PARAMS, "fadeDuration", {
+    label: "fade out duration",
+    min: _fade.min,
+    max: _fade.max,
+  });
+
   const updateBtn = pane.addButton({
     title: "Update",
   });
@@ -246,7 +259,9 @@ function startUI() {
     _range.usePreset = PARAMS.rangeUsePreset;
     _range.chars = PARAMS.rangeChars;
     _posterize.val = PARAMS.posterize;
+    _fade.duration = PARAMS.fadeDuration;
     ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
+    ascii.el.style.animationDuration = PARAMS.fadeDuration + "s";
     if (_display.objectFit !== PARAMS.displayObjectFit) {
       _display.objectFit = PARAMS.displayObjectFit;
       style.innerHTML = `html img { object-fit: ${PARAMS.displayObjectFit}; }`;
