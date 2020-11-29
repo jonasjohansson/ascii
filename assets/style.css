@@ -13,7 +13,7 @@ img {
   height: 100%;
 }
 #ascii.animate {
-  animation: fade 2s infinite;
+  animation: fade 1s;
 }
 img {
   object-fit: contain;
@@ -27,8 +27,8 @@ img {
     filter: contrast(1);
     opacity: 1;
   }
-  50% {
-    opacity: 1;
+  70% {
+    /* opacity: 1; */
   }
   100% {
     filter: contrast(0);
