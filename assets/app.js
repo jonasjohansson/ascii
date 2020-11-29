@@ -1,5 +1,8 @@
 var cnv;
 var myCapture = null;
+var style = document.createElement("style");
+var ref = document.querySelector("script");
+ref.parentNode.insertBefore(style, ref);
 
 const ascii = {
   font: null,
@@ -16,7 +19,8 @@ const _display = {
   density: 1,
   invert: false,
   blendMode: "normal",
-  animate: false,
+  objectFit: "contain",
+  animate: true,
 };
 
 const _range = {
@@ -42,6 +46,7 @@ const PARAMS = {
   displayDensity: _display.density,
   displayInvert: _display.invert,
   displayBlendMode: _display.blendMode,
+  displayObjectFit: _display.objectFit,
   displayAnimate: _display.animate,
   rangeStart: _range.a,
   rangeEnd: _range.b,
@@ -61,9 +66,7 @@ const captureImage = (el) => {
     .toPng(el)
     .then(function (dataUrl) {
       myCapture = loadImage(dataUrl);
-      setTimeout(function () {
-        //el.parentNode.removeChild(el);
-      }, 1000);
+      setup();
     })
     .catch(function (err) {
       console.error(err);
@@ -75,6 +78,7 @@ function preload() {
 }
 
 function setup() {
+  if (myCapture === null) return;
   cnv = createCanvas(windowWidth, windowHeight);
   cnv.parent(ascii.el);
   gfx = createGraphics(_display.w, _display.h);
@@ -176,6 +180,15 @@ function startUI() {
     },
   });
 
+  f1.addInput(PARAMS, "displayObjectFit", {
+    label: "image fit",
+    options: {
+      contain: "contain",
+      cover: "cover",
+      fill: "fill",
+    },
+  });
+
   f1.addInput(PARAMS, "displayAnimate", {
     label: "toggle animation",
   });
@@ -226,7 +239,10 @@ function startUI() {
     _range.chars = PARAMS.rangeChars;
     _posterize.val = PARAMS.posterize;
     ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
+    style.innerHTML = `html img { object-fit: ${PARAMS.displayObjectFit}; }`;
+
     if (cnv.elt !== null) cnv.elt.parentNode.removeChild(cnv.elt);
+    captureImage(document.getElementById("root"));
     setup();
   });
 }
