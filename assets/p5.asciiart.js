@@ -64,7 +64,16 @@
     new AsciiArt(_sketch, _fontName, _fontSize);
     new AsciiArt(_sketch, _fontName, _fontSize, _textStyle);
 */
-p5.prototype.AsciiArt = function (_sketch, _fontName, _fontSize, _textStyle) {
+p5.prototype.AsciiArt = function (
+  _sketch,
+  _fontName = "monospace",
+  _fontSize = 12,
+  _rangeMin = 32,
+  _rangeMax = 126,
+  _rangeUsePreset = false,
+  _rangeChars = "",
+  _textStyle
+) {
   /*
     "Private" variables storing information about the parent sketch name, size
     and style of the font used to create the table containing glyphs sorted by
@@ -72,9 +81,12 @@ p5.prototype.AsciiArt = function (_sketch, _fontName, _fontSize, _textStyle) {
     lighter pixels).
   */
   this.__sketch = _sketch;
-  this.__fontName = "monospace";
-  this.__fontSize = 12;
+  this.__fontName = _fontName;
+  this.__fontSize = _fontSize;
   this.__textStyle = this.__sketch.NORMAL;
+
+  console.log(this.__fontName, this.__fontSize, this.__textStyle);
+
   /*
     "Private" instance of the p5.Graphics. It will be used to sort glyphs, and
     - later - as a buffer of the image converted to the ASCII art.
@@ -83,7 +95,7 @@ p5.prototype.AsciiArt = function (_sketch, _fontName, _fontSize, _textStyle) {
   /*
     We can determine what scope of the ASCII code table we will use.
   */
-  this.__range = { min: 34, max: 45 };
+  this.__range = { min: _rangeMin, max: _rangeMax };
   /*
     "Private" array containing set of glyphs sorted by "weight".
   */
@@ -98,7 +110,7 @@ p5.prototype.AsciiArt = function (_sketch, _fontName, _fontSize, _textStyle) {
     larger area will be assigned to lighter pixels, but we can invert this
     behaviour if we want to.
   */
-  this.invertBrightnessFlag = true;
+  this.invertBrightnessFlag = false;
   /*
     Here we are handling all four variants of the pseudoclass constructor.
   */
@@ -115,19 +127,19 @@ p5.prototype.AsciiArt = function (_sketch, _fontName, _fontSize, _textStyle) {
   */
   this.createWeightTable();
 
-  this.chars = " .:-+*=%# ";
-  this.__weightTable = [];
+  if (_rangeUsePreset === true) {
+    this.chars = _rangeChars;
+    this.__weightTable = [];
 
-  for (let i = 0; i < this.chars.length; i++) {
-    const char = this.chars[i];
-    const codeObject = {
-      code: char.charCodeAt(0),
-      weight: i,
-    };
-    this.__weightTable.push(codeObject);
+    for (let i = 0; i < this.chars.length; i++) {
+      const char = this.chars[i];
+      const codeObject = {
+        code: char.charCodeAt(0),
+        weight: i,
+      };
+      this.__weightTable.push(codeObject);
+    }
   }
-
-  // .:-+*=%#
 
   console.log(this.__weightTable);
 };

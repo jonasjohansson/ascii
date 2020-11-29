@@ -1,98 +1,20 @@
 <html>
   <head>
+    <base href="./assets/" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <script src="js/p5.min.js"></script>
-    <script src="js/p5.dom.min.js"></script>
-    <script src="js/p5.asciiart.js"></script>
-    <script src="js/dom-to-image.js"></script>
-    <script src="js/typeArray2d.js"></script>
-    <style>
-      body {
-        overflow: hidden;
-      }
-      #ascii,
-      img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-      }
-      #ascii {
-        z-index: 999;
-      }
-    </style>
+    <script src="p5.min.js"></script>
+    <script src="p5.dom.min.js"></script>
+    <script src="p5.asciiart.js"></script>
+    <script src="dom-to-image.js"></script>
+    <script src="typeArray2d.js"></script>
+    <script src="tweakpane.min.js"></script>
+    <script defer src="app.js"></script>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body style="margin: 0">
-  <div id="ascii"></div>
-    <div id="root"></div>
+    <div id="ascii"></div>
+    <div id="root">
       <img src="site-low.jpg" />
     </div>
-    <script>
-      var myAsciiArt;
-      var asciiart_width = 120;
-      var asciiart_height = 70;
-      var gfx;
-      var ascii_arr;
-      var showOryginalImageFlag = false;
-      var playVideo = false;
-      var myCapture = null;
-      var myFont;
-      window.onload = function () {
-        const root = document.getElementById("root");
-        domtoimage
-          .toPng(root)
-          .then(function (dataUrl) {
-            console.log(dataUrl);
-            myCapture = loadImage("site-low.jpg");
-          })
-          .catch(function (error) {
-            console.error("oops, something went wrong!", error);
-          });
-      };
-
-      function preload() {
-        myFont = loadFont("mono.otf");
-      }
-
-      function setup() {
-        cnv = createCanvas(windowWidth, windowHeight); // we need some space...
-        cnv.parent("ascii");
-        gfx = createGraphics(asciiart_width, asciiart_height);
-        gfx.pixelDensity(1);
-        myAsciiArt = new AsciiArt(this);
-        //myAsciiArt.printWeightTable();
-        textAlign(CENTER, CENTER);
-        textFont(myFont, 12);
-        textStyle(NORMAL);
-        noStroke();
-        fill(0);
-        frameRate(30);
-      }
-
-      function draw() {
-        background(255);
-
-        if (myCapture === null) return;
-
-        gfx.background(255);
-        let distanceToCenter = int(dist(mouseX, mouseY, width / 2, height / 2));
-        let distanceVal = map(distanceToCenter, 0, width / 2, 1, 0)
-        let tintVal = map(sin(millis()/2000),-1,1,0,255)
-        gfx.tint(tintVal, distanceVal * 255);
-        gfx.image(myCapture, 0, 0, gfx.width, gfx.height);
-        cnv.elt.parentNode.style.opacity = distanceVal
-        gfx.filter(POSTERIZE, 20);
-        ascii_arr = myAsciiArt.convert(gfx);
-        if (showOryginalImageFlag) image(myCapture, 0, 0, width, height);
-        myAsciiArt.typeArray2d(ascii_arr, this, 0, 0);
-      }
-
-      function windowResized() {
-        resizeCanvas(windowWidth, windowHeight);
-      }
-    </script>
   </body>
 </html>
