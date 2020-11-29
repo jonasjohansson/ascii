@@ -78,7 +78,8 @@ function preload() {
 
 function setup() {
   if (myCapture === undefined) return;
-  if (cnv !== undefined) cnv.elt.parentNode.removeChild(cnv.elt);
+  for (let canvas of document.querySelectorAll("canvas"))
+    canvas.parentNode.removeChild(canvas);
   cnv = createCanvas(windowWidth, windowHeight);
   cnv.parent(ascii.el);
   gfx = createGraphics(_display.w, _display.h);
