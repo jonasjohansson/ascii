@@ -243,6 +243,5 @@ function startUI() {
 
     if (cnv.elt !== null) cnv.elt.parentNode.removeChild(cnv.elt);
     captureImage(document.getElementById("root"));
-    setup();
   });
 }
