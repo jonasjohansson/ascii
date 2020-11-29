@@ -29,7 +29,7 @@ const _range = {
   min: 32,
   max: 126,
   usePreset: true,
-  chars: " .:-+*=%!",
+  chars: " .:-+*=!oidutsenca ",
 };
 
 const _posterize = {
