@@ -83,7 +83,13 @@ window.onload = function () {
   ascii.el.addEventListener("mousedown", function () {
     document.body.classList.add("animate");
   });
+  ascii.el.addEventListener("touchstart", function () {
+    document.body.classList.add("animate");
+  });
   ascii.el.addEventListener("mouseup", function () {
+    document.body.classList.remove("animate");
+  });
+  ascii.el.addEventListener("touchend", function () {
     document.body.classList.remove("animate");
   });
 };
