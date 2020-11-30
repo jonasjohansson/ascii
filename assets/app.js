@@ -3,6 +3,21 @@ var style = document.createElement("style");
 var ref = document.querySelector("script");
 ref.parentNode.insertBefore(style, ref);
 
+var w = window.innerWidth;
+var h = window.innerHeight;
+var displayWidth = 80;
+var displayHeight = 80;
+
+if (w > h) {
+  r = w / h;
+  console.log(r);
+  displayWidth = Math.round(80 * r);
+} else {
+  r = h / w;
+  console.log(r);
+  displayHeight = Math.round(80 * r);
+}
+
 const ascii = {
   font: null,
   fontFile: "mono.otf",
@@ -11,8 +26,8 @@ const ascii = {
 };
 
 const _display = {
-  w: 160,
-  h: 80,
+  w: displayWidth,
+  h: displayHeight,
   min: 1,
   max: 160,
   density: 1,
