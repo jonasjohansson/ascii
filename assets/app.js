@@ -8,6 +8,8 @@ var h = window.innerHeight;
 var displayWidth = 80;
 var displayHeight = 80;
 
+var tween;
+
 if (w > h) {
     r = w / h;
     console.log(r);
@@ -25,6 +27,14 @@ const ascii = {
     el: null,
 };
 
+const _animation = {
+    timer: 0,
+    duration: 8,
+    min: 1,
+    max: 10,
+    repeat: 1,
+};
+
 const _display = {
     w: displayWidth,
     h: displayHeight,
@@ -34,7 +44,6 @@ const _display = {
     invert: false,
     blendMode: 'normal',
     objectFit: 'contain',
-    animate: true,
 };
 
 const _range = {
@@ -43,11 +52,11 @@ const _range = {
     min: 32,
     max: 126,
     usePreset: true,
-    chars: ' .:-+*=!oidutsenca ',
+    chars: ' .:-+*=!=*+-:. ',
 };
 
 const _posterize = {
-    val: 10,
+    val: 4,
     min: 2,
     max: 20,
 };
@@ -63,22 +72,20 @@ const fontSize = 12;
 const PARAMS = {
     displayWidth: _display.w,
     displayHeight: _display.h,
-    displayDensity: _display.density,
     displayInvert: _display.invert,
     displayBlendMode: _display.blendMode,
-    displayObjectFit: _display.objectFit,
-    displayAnimate: _display.animate,
     rangeStart: _range.a,
     rangeEnd: _range.b,
     rangeUsePreset: _range.usePreset,
     rangeChars: _range.chars,
     posterize: _posterize.val,
-    fadeDuration: _fade.duration,
+    animationDuration: _animation.duration,
+    animationRepeat: _animation.repeat,
 };
 
 window.onload = function () {
     ascii.el = document.getElementById('ascii');
-    captureImage(document.getElementById('root'));
+    captureImage(document.getElementById('ascii-landing-page'));
     startUI();
     ascii.el.addEventListener('mousedown', function () {
         document.body.classList.add('animate');
@@ -112,8 +119,9 @@ function preload() {
 
 function setup() {
     if (myCapture === undefined) return;
-    for (let canvas of document.querySelectorAll('canvas'))
+    for (let canvas of document.querySelectorAll('canvas')) {
         canvas.parentNode.removeChild(canvas);
+    }
     cnv = createCanvas(windowWidth, windowHeight);
     cnv.parent(ascii.el);
     gfx = createGraphics(_display.w, _display.h);
@@ -131,7 +139,17 @@ function setup() {
     myAsciiArt.printWeightTable();
     noStroke();
     fill(0);
-    frameRate(60);
+    frameRate(30);
+
+    tween = gsap.to(_animation, {
+        timer: 1,
+        duration: _animation.duration,
+        yoyo: true,
+        repeat: _animation.repeat,
+        onComplete: function () {
+            ascii.el.style.opacity = 0;
+        },
+    });
 }
 
 function draw() {
@@ -142,16 +160,12 @@ function draw() {
     distanceToCenter = constrain(distanceToCenter, 0, width / 2);
     let distanceVal = map(distanceToCenter, 0, width / 2, 255, 0);
 
-    var sine = sin(millis() / 4000);
-    let tintVal = int(map(sine, -1, 1, 64, 255));
+    var sine = sin(millis() / 1000);
+    let tintVal = int(map(sine, 1, -1, 16, 255));
 
     // print(distanceVal, tintVal);
 
-    if (PARAMS.displayAnimate) {
-        gfx.tint(tintVal, 255);
-    } else {
-        gfx.tint(distanceVal, 255);
-    }
+    gfx.tint(_animation.timer * 255, 255);
     gfx.image(myCapture, 0, 0, gfx.width, gfx.height);
     gfx.filter(POSTERIZE, _posterize.val);
     ascii_arr = myAsciiArt.convert(gfx);
@@ -180,6 +194,10 @@ function startUI() {
         title: 'Effects',
     });
 
+    const f4 = pane.addFolder({
+        title: 'Animation',
+    });
+
     f1.addInput(PARAMS, 'displayWidth', {
         label: 'width',
         min: _display.min,
@@ -198,11 +216,11 @@ function startUI() {
         label: 'invert',
     });
 
-    f1.addInput(PARAMS, 'displayDensity', {
-        label: 'density',
-        min: 0.1,
-        max: 2,
-    });
+    // f1.addInput(PARAMS, 'displayDensity', {
+    //     label: 'density',
+    //     min: 0.1,
+    //     max: 2,
+    // });
 
     f1.addInput(PARAMS, 'displayBlendMode', {
         label: 'blending mode',
@@ -216,18 +234,18 @@ function startUI() {
         },
     });
 
-    f1.addInput(PARAMS, 'displayObjectFit', {
-        label: 'image fit',
-        options: {
-            contain: 'contain',
-            cover: 'cover',
-            fill: 'fill',
-        },
-    });
+    // f1.addInput(PARAMS, 'displayObjectFit', {
+    //     label: 'image fit',
+    //     options: {
+    //         contain: 'contain',
+    //         cover: 'cover',
+    //         fill: 'fill',
+    //     },
+    // });
 
-    f1.addInput(PARAMS, 'displayAnimate', {
-        label: 'toggle animation',
-    });
+    // f1.addInput(PARAMS, 'displayAnimate', {
+    //     label: 'toggle animation',
+    // });
 
     /* CHAR RANGE */
 
@@ -248,6 +266,7 @@ function startUI() {
     f2.addInput(PARAMS, 'rangeChars', {
         label: 'preset chars',
     });
+
     f2.addInput(PARAMS, 'rangeUsePreset', {
         label: 'use preset',
     });
@@ -260,17 +279,53 @@ function startUI() {
         step: 1,
     });
 
-    f3.addInput(PARAMS, 'fadeDuration', {
-        label: 'fade out duration',
-        min: _fade.min,
-        max: _fade.max,
+    /* ANIMATION */
+
+    f4.addInput(PARAMS, 'animationDuration', {
+        label: 'duration',
+        min: _animation.min,
+        max: _animation.max,
+    });
+
+    f4.addInput(PARAMS, 'animationRepeat', {
+        label: 'repeat',
+        min: 0,
+        max: 1,
+        step: 1,
     });
 
     const updateBtn = pane.addButton({
         title: 'Update',
     });
 
+    const restartBtn = pane.addButton({
+        title: 'Restart',
+    });
+
     updateBtn.on('click', () => {
+        updateVars();
+        captureImage(document.getElementById('root'));
+        setup();
+    });
+    restartBtn.on('click', () => {
+        updateVars();
+        ascii.el.style.opacity = 1;
+        tween.progress(0);
+        tween = gsap.to(_animation, {
+            timer: 1,
+            duration: _animation.duration,
+            yoyo: true,
+            ease: 'circ.inOut',
+            repeat: _animation.repeat,
+            onComplete: function () {
+                ascii.el.style.opacity = 0;
+            },
+        });
+        console.log(tween);
+        tween.restart();
+    });
+
+    const updateVars = () => {
         _display.w = PARAMS.displayWidth;
         _display.h = PARAMS.displayHeight;
         _display.density = PARAMS.displayDensity;
@@ -280,15 +335,8 @@ function startUI() {
         _range.usePreset = PARAMS.rangeUsePreset;
         _range.chars = PARAMS.rangeChars;
         _posterize.val = PARAMS.posterize;
-        _fade.duration = PARAMS.fadeDuration;
+        _animation.duration = PARAMS.animationDuration;
+        _animation.repeat = PARAMS.animationRepeat;
         ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
-        ascii.el.style.animationDuration = PARAMS.fadeDuration + 's';
-        if (_display.objectFit !== PARAMS.displayObjectFit) {
-            _display.objectFit = PARAMS.displayObjectFit;
-            style.innerHTML = `html img { object-fit: ${PARAMS.displayObjectFit}; }`;
-            captureImage(document.getElementById('root'));
-        } else {
-            setup();
-        }
-    });
+    };
 }

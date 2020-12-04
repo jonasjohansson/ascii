@@ -1,30 +1,50 @@
 body {
     overflow: hidden;
+    user-select: none;
 }
+
+/* ASCII */
+
 #ascii,
-#root {
+#ascii-landing-page {
     position: fixed;
-    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 0px);
 }
-.logo {
+#ascii {
+    z-index: 1;
+    background-color: white;
+}
+#ascii-landing-page {
+    z-index: -1;
+}
+
+/* LOGO */
+
+body:before {
+    content: '';
     position: fixed;
-    top: 0;
-    left: 10vw;
-    right: 0;
-    bottom: 0;
-    width: 80vw;
+    width: 100vw;
     height: 100vh;
+    background-image: url(logo.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 75% auto;
+    z-index: 2;
+    pointer-events: none;
 }
-.logo img {
-    object-fit: contain !important;
-    object-position: center center;
-    /* filter: invert(1); */
+
+/* PANE */
+
+.tp-dfwv {
+    z-index: 3;
 }
+
+/* IMAGES */
+
 .left,
 .right {
     float: left;
@@ -36,16 +56,13 @@ img {
     object-fit: cover;
     object-position: top center;
 }
-#root {
-    z-index: -1;
-}
+
+/* ANIMATION */
+
 .animate #ascii {
     animation-name: fade;
     animation-duration: 2s;
     animation-fill-mode: forwards;
-}
-.animate #root {
-    /* filter: brightness(0.4); */
 }
 @keyframes fade {
     0% {
