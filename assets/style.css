@@ -1,38 +1,45 @@
 body {
-  overflow: hidden;
+    overflow: hidden;
 }
 #ascii,
-#root,
-img {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
+#root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+.left,
+.right {
+    float: left;
+    width: 50%;
 }
 img {
-  object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
 }
 #root {
-  z-index: -1;
+    z-index: -1;
 }
 .animate #ascii {
-  animation-name: fade;
-  animation-duration: 2s;
-  animation-fill-mode: forwards;
+    animation-name: fade;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
 }
 .animate #root {
-  /* filter: brightness(0.4); */
+    /* filter: brightness(0.4); */
 }
 @keyframes fade {
-  0% {
-    filter: contrast(1);
-    opacity: 1;
-  }
-  100% {
-    filter: contrast(0.5);
-    opacity: 0;
-  }
+    0% {
+        filter: contrast(1);
+        opacity: 1;
+    }
+    100% {
+        filter: contrast(0.5);
+        opacity: 0;
+    }
 }
