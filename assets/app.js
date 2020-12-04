@@ -84,6 +84,7 @@ const PARAMS = {
 };
 
 window.onload = function () {
+    document.body.classList.add('show');
     ascii.el = document.getElementById('ascii');
     captureImage(document.getElementById('ascii-landing-page'));
     startUI();
