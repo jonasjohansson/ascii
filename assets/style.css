@@ -11,6 +11,20 @@ body {
     width: 100%;
     height: 100%;
 }
+.logo {
+    position: fixed;
+    top: 0;
+    left: 10vw;
+    right: 0;
+    bottom: 0;
+    width: 80vw;
+    height: 100vh;
+}
+.logo img {
+    object-fit: contain !important;
+    object-position: center center;
+    /* filter: invert(1); */
+}
 .left,
 .right {
     float: left;
