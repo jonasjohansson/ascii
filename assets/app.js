@@ -29,7 +29,7 @@ const ascii = {
 
 const _animation = {
     timer: 0,
-    duration: 8,
+    duration: 6,
     min: 1,
     max: 10,
     repeat: 1,
