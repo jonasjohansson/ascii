@@ -88,18 +88,18 @@ window.onload = function () {
     ascii.el = document.getElementById('ascii');
     captureImage(document.getElementById('ascii-landing-page'));
     startUI();
-    ascii.el.addEventListener('mousedown', function () {
-        document.body.classList.add('animate');
-    });
-    ascii.el.addEventListener('touchstart', function () {
-        document.body.classList.add('animate');
-    });
-    ascii.el.addEventListener('mouseup', function () {
-        document.body.classList.remove('animate');
-    });
-    ascii.el.addEventListener('touchend', function () {
-        document.body.classList.remove('animate');
-    });
+    // ascii.el.addEventListener('mousedown', function () {
+    //     document.body.classList.add('animate');
+    // });
+    // ascii.el.addEventListener('touchstart', function () {
+    //     document.body.classList.add('animate');
+    // });
+    // ascii.el.addEventListener('mouseup', function () {
+    //     document.body.classList.remove('animate');
+    // });
+    // ascii.el.addEventListener('touchend', function () {
+    //     document.body.classList.remove('animate');
+    // });
 };
 
 const captureImage = (el) => {
@@ -110,7 +110,7 @@ const captureImage = (el) => {
             setup();
         })
         .catch(function (err) {
-            console.error(err);
+            // console.error(err);
         });
 };
 
@@ -148,7 +148,7 @@ function setup() {
         yoyo: true,
         repeat: _animation.repeat,
         onComplete: function () {
-            ascii.el.style.opacity = 0;
+            document.body.classList.add('animate');
         },
     });
 }
@@ -165,6 +165,8 @@ function draw() {
     let tintVal = int(map(sine, 1, -1, 16, 255));
 
     // print(distanceVal, tintVal);
+    stroke(255, 0, 0);
+    strokeWeight(2);
 
     gfx.tint(_animation.timer * 255, 255);
     gfx.image(myCapture, 0, 0, gfx.width, gfx.height);
@@ -250,27 +252,27 @@ function startUI() {
 
     /* CHAR RANGE */
 
-    f2.addInput(PARAMS, 'rangeStart', {
-        label: 'start',
-        min: _range.min,
-        max: _range.max,
-        step: 1,
-    });
+    // f2.addInput(PARAMS, 'rangeStart', {
+    //     label: 'start',
+    //     min: _range.min,
+    //     max: _range.max,
+    //     step: 1,
+    // });
 
-    f2.addInput(PARAMS, 'rangeEnd', {
-        label: 'end',
-        min: _range.min,
-        max: _range.max,
-        step: 1,
-    });
+    // f2.addInput(PARAMS, 'rangeEnd', {
+    //     label: 'end',
+    //     min: _range.min,
+    //     max: _range.max,
+    //     step: 1,
+    // });
 
     f2.addInput(PARAMS, 'rangeChars', {
-        label: 'preset chars',
+        label: 'chars',
     });
 
-    f2.addInput(PARAMS, 'rangeUsePreset', {
-        label: 'use preset',
-    });
+    // f2.addInput(PARAMS, 'rangeUsePreset', {
+    //     label: 'use preset',
+    // });
 
     /* EFFECTS */
 
@@ -291,39 +293,21 @@ function startUI() {
     f4.addInput(PARAMS, 'animationRepeat', {
         label: 'repeat',
         min: 0,
-        max: 1,
+        max: 4,
         step: 1,
     });
 
-    const updateBtn = pane.addButton({
-        title: 'Update',
+    const reloadBtn = pane.addButton({
+        title: 'Reload',
     });
 
-    const restartBtn = pane.addButton({
-        title: 'Restart',
-    });
-
-    updateBtn.on('click', () => {
+    reloadBtn.on('click', () => {
+        document.body.classList.remove('animate');
+        tween.restart();
+        tween.kill();
         updateVars();
         captureImage(document.getElementById('root'));
         setup();
-    });
-    restartBtn.on('click', () => {
-        updateVars();
-        ascii.el.style.opacity = 1;
-        tween.progress(0);
-        tween = gsap.to(_animation, {
-            timer: 1,
-            duration: _animation.duration,
-            yoyo: true,
-            ease: 'circ.inOut',
-            repeat: _animation.repeat,
-            onComplete: function () {
-                ascii.el.style.opacity = 0;
-            },
-        });
-        console.log(tween);
-        tween.restart();
     });
 
     const updateVars = () => {
