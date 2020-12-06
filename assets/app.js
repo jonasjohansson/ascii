@@ -309,18 +309,18 @@ function startUI() {
     f4.addInput(PARAMS, 'animationEase', {
         label: 'ease',
         options: {
-            easeInOut: 'ease.inOut',
-            ease: 'ease',
-            easeIn: 'ease.in',
-            easeOut: 'ease.out',
-            expoInOut: 'expo.inOut',
+            sine: 'sine',
+            sineIn: 'sine.in',
+            sineOut: 'sine.out',
+            sineInOut: 'sine.inOut',
             expo: 'expo',
             expoIn: 'expo.in',
             expoOut: 'expo.out',
-            circInOut: 'circ.inOut',
+            expoInOut: 'expo.inOut',
             circ: 'circ',
             circIn: 'circ.in',
             circOut: 'circ.out',
+            circInOut: 'circ.inOut',
         },
     });
 
