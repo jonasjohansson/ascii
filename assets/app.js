@@ -46,6 +46,7 @@ const _display = {
     invert: false,
     blendMode: 'normal',
     objectFit: 'contain',
+    showSource: false,
 };
 
 const _range = {
@@ -76,6 +77,7 @@ const PARAMS = {
     displayHeight: _display.h,
     displayInvert: _display.invert,
     displayBlendMode: _display.blendMode,
+    displayShowSource: _display.showSource,
     rangeStart: _range.a,
     rangeEnd: _range.b,
     rangeUsePreset: _range.usePreset,
@@ -169,13 +171,11 @@ function draw() {
     var sine = sin(millis() / 1000);
     let tintVal = int(map(sine, 1, -1, 16, 255));
 
-    // print(distanceVal, tintVal);
-
     gfx.tint(_animation.timer * 255, 255);
     gfx.image(myCapture, 0, 0, gfx.width, gfx.height);
     gfx.filter(POSTERIZE, _posterize.val);
     ascii_arr = myAsciiArt.convert(gfx);
-    //image(myCapture, 0, 0, width, height);
+    if (_display.showSource) image(gfx, 0, 0, width, height);
     myAsciiArt.typeArray2d(ascii_arr, this, 0, 0);
 }
 
@@ -238,6 +238,11 @@ function startUI() {
             luminosity: 'luminosity',
             screen: 'screen',
         },
+    });
+
+    f1.addInput(PARAMS, 'displayShowSource', {
+        label: 'show source',
+        showSource: false,
     });
 
     // f1.addInput(PARAMS, 'displayObjectFit', {
@@ -342,6 +347,7 @@ function startUI() {
         _display.h = PARAMS.displayHeight;
         _display.density = PARAMS.displayDensity;
         _display.invert = PARAMS.displayInvert;
+        _display.showSource = PARAMS.displayShowSource;
         _range.a = PARAMS.rangeStart;
         _range.b = PARAMS.rangeEnd;
         _range.usePreset = PARAMS.rangeUsePreset;
