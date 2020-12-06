@@ -1,9 +1,4 @@
-var cnv, gfx, capture;
-
-var tween;
-
-var w = window.innerWidth;
-var h = window.innerHeight;
+var cnv, gfx, capture, tween;
 
 const ascii = {
     font: null,
@@ -33,6 +28,9 @@ const _display = {
     objectFit: 'contain',
     showSource: false,
 };
+
+var w = window.innerWidth;
+var h = window.innerHeight;
 
 if (w > h) {
     aspectRatio = w / h;
@@ -145,9 +143,7 @@ function windowResized() {
 window.onload = function () {
     document.body.classList.add('show');
     ascii.el = document.getElementById('ascii');
-
     let el = document.getElementById('ascii-landing-page');
-
     domtoimage.toPng(el).then(function (dataUrl) {
         domtoimage.toPng(el).then(function (dataUrl) {
             loadImage(dataUrl, (img) => {
@@ -198,12 +194,6 @@ function startUI() {
         label: 'invert',
     });
 
-    // f1.addInput(PARAMS, 'displayDensity', {
-    //     label: 'density',
-    //     min: 0.1,
-    //     max: 2,
-    // });
-
     f1.addInput(PARAMS, 'displayBlendMode', {
         label: 'blending mode',
         options: {
@@ -221,42 +211,11 @@ function startUI() {
         showSource: false,
     });
 
-    // f1.addInput(PARAMS, 'displayObjectFit', {
-    //     label: 'image fit',
-    //     options: {
-    //         contain: 'contain',
-    //         cover: 'cover',
-    //         fill: 'fill',
-    //     },
-    // });
-
-    // f1.addInput(PARAMS, 'displayAnimate', {
-    //     label: 'toggle animation',
-    // });
-
     /* CHAR RANGE */
-
-    // f2.addInput(PARAMS, 'rangeStart', {
-    //     label: 'start',
-    //     min: _range.min,
-    //     max: _range.max,
-    //     step: 1,
-    // });
-
-    // f2.addInput(PARAMS, 'rangeEnd', {
-    //     label: 'end',
-    //     min: _range.min,
-    //     max: _range.max,
-    //     step: 1,
-    // });
 
     f2.addInput(PARAMS, 'rangeChars', {
         label: 'chars',
     });
-
-    // f2.addInput(PARAMS, 'rangeUsePreset', {
-    //     label: 'use preset',
-    // });
 
     /* EFFECTS */
 
