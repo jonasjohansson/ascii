@@ -19,36 +19,33 @@ body:not(.show) {
     height: calc(100% - 0px);
 }
 #ascii {
-    z-index: 1;
+    z-index: 20;
     background-color: white;
 }
-#ascii canvas {
-    margin-top: 4px;
-    margin-left: -4px;
-}
 #ascii-landing-page {
-    z-index: -1;
+    z-index: 10;
 }
 
 /* LOGO */
 
-body:before {
-    content: '';
+#logo {
     position: fixed;
-    width: 100vw;
-    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-image: url(logo.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 75% auto;
     pointer-events: none;
-    z-index: 2;
+    z-index: 30;
 }
 
 /* PANE */
 
 .tp-dfwv {
-    z-index: 3;
+    z-index: 40;
 }
 
 /* IMAGES */

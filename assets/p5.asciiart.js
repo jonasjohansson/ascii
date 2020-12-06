@@ -334,14 +334,14 @@ p5.prototype.AsciiArt.prototype.convert2dArrayToString = function (_arr2d) {
 */
 p5.prototype.AsciiArt.prototype.printWeightTable = function () {
     for (var i = 0; i < this.__weightTable.length; i++)
-        /*console.log(
+        console.log(
             '[' +
                 i +
                 '] ' +
                 this.__sketch.char(this.__weightTable[i].code) +
                 ' ' +
                 this.__weightTable[i].weight
-        );*/
+        );
 };
 
 /*

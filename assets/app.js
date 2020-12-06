@@ -1,14 +1,10 @@
-var cnv, gfx, myCapture;
+var cnv, gfx, capture;
 
-var debug = true;
+var tween;
 
 var w = window.innerWidth;
 var h = window.innerHeight;
-var displayWidth = 80;
-var displayHeight = 80;
 
-var tween;
-var pixelRatio = 1;
 const ascii = {
     font: null,
     fontFile: 'mono.otf',
@@ -27,16 +23,30 @@ const _animation = {
 };
 
 const _display = {
-    w: displayWidth,
-    h: displayHeight,
+    w: 80,
+    h: 80,
     min: 1,
     max: 160,
-    density: 1,
+    density: 2,
     invert: false,
     blendMode: 'normal',
     objectFit: 'contain',
     showSource: false,
 };
+
+if (w > h) {
+    aspectRatio = w / h;
+    _display.w = Math.round(_display.w * aspectRatio);
+} else {
+    aspectRatio = h / w;
+    _display.h = Math.round(_display.h * aspectRatio);
+}
+
+if (isMobileDevice()) {
+    var pixelRatio = window.devicePixelRatio || 1;
+    _display.w /= pixelRatio;
+    _display.h /= pixelRatio;
+}
 
 const _range = {
     a: 0,
@@ -78,54 +88,17 @@ const PARAMS = {
     animationRepeat: _animation.repeat,
 };
 
-window.onload = function () {
-    if (w > h) {
-        r = w / h;
-        logg(r);
-        _display.w = Math.round(80 * r);
-    } else {
-        r = h / w;
-        logg(r);
-        _display.h = Math.round(80 * r);
-    }
-
-    if (isMobileDevice()) {
-        r = getDevicePixelRatio();
-        _display.w = Math.round(_display.w / r);
-        _display.h = Math.round(_display.h / r);
-    }
-
-    document.body.classList.add('show');
-    ascii.el = document.getElementById('ascii');
-    captureImage(document.getElementById('ascii-landing-page'));
-    startUI();
-};
-
-const captureImage = (el) => {
-    domtoimage
-        .toPng(el)
-        .then(function (dataUrl) {
-            myCapture = loadImage(dataUrl);
-            setup();
-        })
-        .catch(function (err) {
-            // console.error(err);
-        });
-};
-
 function preload() {
     ascii.font = loadFont(ascii.fontFile);
 }
 
 function setup() {
-    if (myCapture === undefined) return;
-    for (let canvas of document.querySelectorAll('canvas')) {
-        canvas.parentNode.removeChild(canvas);
-    }
+    if (capture === undefined) return;
     cnv = createCanvas(windowWidth, windowHeight);
     cnv.parent(ascii.el);
     gfx = createGraphics(_display.w, _display.h);
     gfx.pixelDensity(_display.density);
+
     myAsciiArt = new AsciiArt(
         this,
         ascii.font,
@@ -136,7 +109,8 @@ function setup() {
         _range.chars,
         _display.invert
     );
-    myAsciiArt.printWeightTable();
+
+    // myAsciiArt.printWeightTable();
     noStroke();
     fill(0);
     frameRate(30);
@@ -154,18 +128,10 @@ function setup() {
 }
 
 function draw() {
+    if (capture === undefined) return;
     background(255);
-    if (myCapture === undefined) return;
-
-    let distanceToCenter = int(dist(mouseX, mouseY, width / 2, height / 2));
-    distanceToCenter = constrain(distanceToCenter, 0, width / 2);
-    let distanceVal = map(distanceToCenter, 0, width / 2, 255, 0);
-
-    var sine = sin(millis() / 1000);
-    let tintVal = int(map(sine, 1, -1, 16, 255));
-
     gfx.tint(_animation.timer * 255, 255);
-    gfx.image(myCapture, 0, 0, gfx.width, gfx.height);
+    gfx.image(capture, 0, 0, gfx.width, gfx.height);
     gfx.filter(POSTERIZE, _posterize.val);
     ascii_arr = myAsciiArt.convert(gfx);
     if (_display.showSource) image(gfx, 0, 0, width, height);
@@ -175,6 +141,23 @@ function draw() {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
+
+window.onload = function () {
+    document.body.classList.add('show');
+    ascii.el = document.getElementById('ascii');
+
+    let el = document.getElementById('ascii-landing-page');
+
+    domtoimage.toPng(el).then(function (dataUrl) {
+        domtoimage.toPng(el).then(function (dataUrl) {
+            loadImage(dataUrl, (img) => {
+                capture = img;
+                setup();
+                startUI();
+            });
+        });
+    });
+};
 
 function startUI() {
     const pane = new Tweakpane({
@@ -355,17 +338,9 @@ function startUI() {
     };
 }
 
-function getDevicePixelRatio() {
-    return window.devicePixelRatio || 1;
-}
-
 function isMobileDevice() {
     return (
         typeof window.orientation !== 'undefined' ||
         navigator.userAgent.indexOf('IEMobile') !== -1
     );
 }
-
-var logg = function (m) {
-    if (debug) return console.log(m);
-};
