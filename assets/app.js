@@ -308,7 +308,20 @@ function startUI() {
 
     f4.addInput(PARAMS, 'animationEase', {
         label: 'ease',
-        message: _animation.ease,
+        options: {
+            easeInOut: 'ease.inOut',
+            ease: 'ease',
+            easeIn: 'ease.in',
+            easeOut: 'ease.out',
+            expoInOut: 'expo.inOut',
+            expo: 'expo',
+            expoIn: 'expo.in',
+            expoOut: 'expo.out',
+            circInOut: 'circ.inOut',
+            circ: 'circ',
+            circIn: 'circ.in',
+            circOut: 'circ.out',
+        },
     });
 
     const reloadBtn = pane.addButton({
