@@ -30,7 +30,7 @@ const ascii = {
 const _animation = {
     timer: 0,
     duration: 6,
-    delay: 0,
+    delay: 0.5,
     ease: 'sine.InOut',
     min: 0,
     max: 10,
