@@ -1,7 +1,6 @@
 var cnv, gfx, myCapture;
-var style = document.createElement('style');
-var ref = document.querySelector('script');
-ref.parentNode.insertBefore(style, ref);
+
+var debug = true;
 
 var w = window.innerWidth;
 var h = window.innerHeight;
@@ -9,17 +8,7 @@ var displayWidth = 80;
 var displayHeight = 80;
 
 var tween;
-
-if (w > h) {
-    r = w / h;
-    console.log(r);
-    displayWidth = Math.round(80 * r);
-} else {
-    r = h / w;
-    console.log(r);
-    displayHeight = Math.round(80 * r);
-}
-
+var pixelRatio = 1;
 const ascii = {
     font: null,
     fontFile: 'mono.otf',
@@ -90,22 +79,26 @@ const PARAMS = {
 };
 
 window.onload = function () {
+    if (w > h) {
+        r = w / h;
+        logg(r);
+        _display.w = Math.round(80 * r);
+    } else {
+        r = h / w;
+        logg(r);
+        _display.h = Math.round(80 * r);
+    }
+
+    if (isMobileDevice()) {
+        r = getDevicePixelRatio();
+        _display.w = Math.round(_display.w / r);
+        _display.h = Math.round(_display.h / r);
+    }
+
     document.body.classList.add('show');
     ascii.el = document.getElementById('ascii');
     captureImage(document.getElementById('ascii-landing-page'));
     startUI();
-    // ascii.el.addEventListener('mousedown', function () {
-    //     document.body.classList.add('animate');
-    // });
-    // ascii.el.addEventListener('touchstart', function () {
-    //     document.body.classList.add('animate');
-    // });
-    // ascii.el.addEventListener('mouseup', function () {
-    //     document.body.classList.remove('animate');
-    // });
-    // ascii.el.addEventListener('touchend', function () {
-    //     document.body.classList.remove('animate');
-    // });
 };
 
 const captureImage = (el) => {
@@ -361,3 +354,18 @@ function startUI() {
         ascii.el.style.animationDelay = PARAMS.animationDelay + 's';
     };
 }
+
+function getDevicePixelRatio() {
+    return window.devicePixelRatio || 1;
+}
+
+function isMobileDevice() {
+    return (
+        typeof window.orientation !== 'undefined' ||
+        navigator.userAgent.indexOf('IEMobile') !== -1
+    );
+}
+
+var logg = function (m) {
+    if (debug) return console.log(m);
+};

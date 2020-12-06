@@ -22,6 +22,10 @@ body:not(.show) {
     z-index: 1;
     background-color: white;
 }
+#ascii canvas {
+    margin-top: 4px;
+    margin-left: -4px;
+}
 #ascii-landing-page {
     z-index: -1;
 }

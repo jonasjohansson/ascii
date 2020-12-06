@@ -86,7 +86,7 @@ p5.prototype.AsciiArt = function (
     this.__fontSize = _fontSize;
     this.__textStyle = this.__sketch.NORMAL;
 
-    console.log(this.__fontName, this.__fontSize, this.__textStyle);
+    //console.log(this.__fontName, this.__fontSize, this.__textStyle);
 
     /*
     "Private" instance of the p5.Graphics. It will be used to sort glyphs, and
@@ -142,7 +142,7 @@ p5.prototype.AsciiArt = function (
         }
     }
 
-    console.log(this.__weightTable);
+    //console.log(this.__weightTable);
 };
 
 // p5js bug (?) workaround
@@ -334,14 +334,14 @@ p5.prototype.AsciiArt.prototype.convert2dArrayToString = function (_arr2d) {
 */
 p5.prototype.AsciiArt.prototype.printWeightTable = function () {
     for (var i = 0; i < this.__weightTable.length; i++)
-        console.log(
+        /*console.log(
             '[' +
                 i +
                 '] ' +
                 this.__sketch.char(this.__weightTable[i].code) +
                 ' ' +
                 this.__weightTable[i].weight
-        );
+        );*/
 };
 
 /*
