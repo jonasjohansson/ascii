@@ -31,6 +31,7 @@ const _animation = {
     timer: 0,
     duration: 6,
     delay: 0,
+    ease: 'sine.InOut',
     min: 0,
     max: 10,
     repeat: 1,
@@ -82,6 +83,7 @@ const PARAMS = {
     posterize: _posterize.val,
     animationDuration: _animation.duration,
     animationDelay: _animation.delay,
+    animationEase: _animation.ease,
     animationRepeat: _animation.repeat,
 };
 
@@ -144,20 +146,16 @@ function setup() {
     fill(0);
     frameRate(30);
 
-    tween = gsap.fromTo(
-        _animation,
-        { timer: 0 },
-        {
-            timer: 1,
-            duration: _animation.duration,
-            ease: 'sine.inOut',
-            yoyo: true,
-            repeat: _animation.repeat,
-            onComplete: function () {
-                document.body.classList.add('animate');
-            },
-        }
-    );
+    tween = gsap.to(_animation, {
+        timer: 1,
+        duration: _animation.duration,
+        ease: _animation.ease,
+        yoyo: true,
+        repeat: _animation.repeat,
+        onComplete: function () {
+            document.body.classList.add('animate');
+        },
+    });
 }
 
 function draw() {
@@ -308,14 +306,19 @@ function startUI() {
         step: 1,
     });
 
+    f4.addInput(PARAMS, 'animationEase', {
+        label: 'ease',
+        message: _animation.ease,
+    });
+
     const reloadBtn = pane.addButton({
         title: 'Reload',
     });
 
     reloadBtn.on('click', () => {
         document.body.classList.remove('animate');
-        tween.restart();
-        tween.kill();
+        _animation.timer = 0;
+        tween.invalidate().restart();
         updateVars();
         captureImage(document.getElementById('root'));
         setup();
@@ -333,6 +336,7 @@ function startUI() {
         _posterize.val = PARAMS.posterize;
         _animation.duration = PARAMS.animationDuration;
         _animation.delay = PARAMS.animationDelay;
+        _animation.ease = PARAMS.animationEase;
         _animation.repeat = PARAMS.animationRepeat;
         ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
         ascii.el.style.animationDelay = PARAMS.animationDelay + 's';
