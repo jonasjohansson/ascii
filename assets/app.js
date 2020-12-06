@@ -30,7 +30,8 @@ const ascii = {
 const _animation = {
     timer: 0,
     duration: 6,
-    min: 1,
+    delay: 0,
+    min: 0,
     max: 10,
     repeat: 1,
 };
@@ -52,11 +53,11 @@ const _range = {
     min: 32,
     max: 126,
     usePreset: true,
-    chars: ' .:-+*=!=*+-:. ',
+    chars: ' .:-=+*#%@',
 };
 
 const _posterize = {
-    val: 4,
+    val: 8,
     min: 2,
     max: 20,
 };
@@ -80,6 +81,7 @@ const PARAMS = {
     rangeChars: _range.chars,
     posterize: _posterize.val,
     animationDuration: _animation.duration,
+    animationDelay: _animation.delay,
     animationRepeat: _animation.repeat,
 };
 
@@ -142,15 +144,20 @@ function setup() {
     fill(0);
     frameRate(30);
 
-    tween = gsap.to(_animation, {
-        timer: 1,
-        duration: _animation.duration,
-        yoyo: true,
-        repeat: _animation.repeat,
-        onComplete: function () {
-            document.body.classList.add('animate');
-        },
-    });
+    tween = gsap.fromTo(
+        _animation,
+        { timer: 0 },
+        {
+            timer: 1,
+            duration: _animation.duration,
+            ease: 'sine.inOut',
+            yoyo: true,
+            repeat: _animation.repeat,
+            onComplete: function () {
+                document.body.classList.add('animate');
+            },
+        }
+    );
 }
 
 function draw() {
@@ -165,8 +172,6 @@ function draw() {
     let tintVal = int(map(sine, 1, -1, 16, 255));
 
     // print(distanceVal, tintVal);
-    stroke(255, 0, 0);
-    strokeWeight(2);
 
     gfx.tint(_animation.timer * 255, 255);
     gfx.image(myCapture, 0, 0, gfx.width, gfx.height);
@@ -290,6 +295,12 @@ function startUI() {
         max: _animation.max,
     });
 
+    f4.addInput(PARAMS, 'animationDelay', {
+        label: 'delay',
+        min: _animation.min,
+        max: _animation.max,
+    });
+
     f4.addInput(PARAMS, 'animationRepeat', {
         label: 'repeat',
         min: 0,
@@ -321,7 +332,9 @@ function startUI() {
         _range.chars = PARAMS.rangeChars;
         _posterize.val = PARAMS.posterize;
         _animation.duration = PARAMS.animationDuration;
+        _animation.delay = PARAMS.animationDelay;
         _animation.repeat = PARAMS.animationRepeat;
         ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
+        ascii.el.style.animationDelay = PARAMS.animationDelay + 's';
     };
 }
