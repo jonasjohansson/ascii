@@ -92,6 +92,9 @@ function preload() {
 
 function setup() {
     if (capture === undefined) return;
+    for (let canvas of document.querySelectorAll('canvas')) {
+        canvas.parentNode.removeChild(canvas);
+    }
     cnv = createCanvas(windowWidth, windowHeight);
     cnv.parent(ascii.el);
     gfx = createGraphics(_display.w, _display.h);
@@ -143,7 +146,10 @@ function windowResized() {
 window.onload = function () {
     document.body.classList.add('show');
     ascii.el = document.getElementById('ascii');
-    let el = document.getElementById('ascii-landing-page');
+    captureImage(document.getElementById('ascii-landing-page'));
+};
+
+function captureImage(el) {
     domtoimage.toPng(el).then(function (dataUrl) {
         domtoimage.toPng(el).then(function (dataUrl) {
             loadImage(dataUrl, (img) => {
@@ -153,7 +159,7 @@ window.onload = function () {
             });
         });
     });
-};
+}
 
 function startUI() {
     const pane = new Tweakpane({
