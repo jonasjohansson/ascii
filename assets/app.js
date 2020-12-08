@@ -10,6 +10,7 @@ const ascii = {
 const _animation = {
     timer: 0,
     duration: 6,
+    transitionDuration: 0,
     delay: 0.5,
     ease: 'sine.InOut',
     min: 0,
@@ -61,12 +62,6 @@ const _posterize = {
     max: 20,
 };
 
-const _fade = {
-    duration: 1,
-    min: 0,
-    max: 4,
-};
-
 const fontSize = 12;
 
 const PARAMS = {
@@ -81,6 +76,7 @@ const PARAMS = {
     rangeChars: _range.chars,
     posterize: _posterize.val,
     animationDuration: _animation.duration,
+    animationTransitionDuration: _animation.transitionDuration,
     animationDelay: _animation.delay,
     animationEase: _animation.ease,
     animationRepeat: _animation.repeat,
@@ -154,6 +150,7 @@ function captureImage(el) {
         domtoimage.toPng(el).then(function (dataUrl) {
             loadImage(dataUrl, (img) => {
                 capture = img;
+                updateVars();
                 setup();
                 startUI();
             });
@@ -237,6 +234,7 @@ function startUI() {
         label: 'duration',
         min: _animation.min,
         max: _animation.max,
+        step: 0.2,
     });
 
     f4.addInput(PARAMS, 'animationDelay', {
@@ -270,6 +268,12 @@ function startUI() {
         },
     });
 
+    f4.addInput(PARAMS, 'animationTransitionDuration', {
+        label: 'transition',
+        min: 0,
+        max: 2,
+    });
+
     const reloadBtn = pane.addButton({
         title: 'Reload',
     });
@@ -282,26 +286,28 @@ function startUI() {
         captureImage(document.getElementById('root'));
         setup();
     });
-
-    const updateVars = () => {
-        _display.w = PARAMS.displayWidth;
-        _display.h = PARAMS.displayHeight;
-        _display.density = PARAMS.displayDensity;
-        _display.invert = PARAMS.displayInvert;
-        _display.showSource = PARAMS.displayShowSource;
-        _range.a = PARAMS.rangeStart;
-        _range.b = PARAMS.rangeEnd;
-        _range.usePreset = PARAMS.rangeUsePreset;
-        _range.chars = PARAMS.rangeChars;
-        _posterize.val = PARAMS.posterize;
-        _animation.duration = PARAMS.animationDuration;
-        _animation.delay = PARAMS.animationDelay;
-        _animation.ease = PARAMS.animationEase;
-        _animation.repeat = PARAMS.animationRepeat;
-        ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
-        ascii.el.style.animationDelay = PARAMS.animationDelay + 's';
-    };
 }
+
+const updateVars = () => {
+    _display.w = PARAMS.displayWidth;
+    _display.h = PARAMS.displayHeight;
+    _display.density = PARAMS.displayDensity;
+    _display.invert = PARAMS.displayInvert;
+    _display.showSource = PARAMS.displayShowSource;
+    _range.a = PARAMS.rangeStart;
+    _range.b = PARAMS.rangeEnd;
+    _range.usePreset = PARAMS.rangeUsePreset;
+    _range.chars = PARAMS.rangeChars;
+    _posterize.val = PARAMS.posterize;
+    _animation.duration = PARAMS.animationDuration;
+    _animation.transitionDuration = PARAMS.animationTransitionDuration;
+    _animation.delay = PARAMS.animationDelay;
+    _animation.ease = PARAMS.animationEase;
+    _animation.repeat = PARAMS.animationRepeat;
+    ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
+    ascii.el.style.animationDelay = PARAMS.animationDelay + 's';
+    ascii.el.style.animationDuration = PARAMS.animationTransitionDuration + 's';
+};
 
 function isMobileDevice() {
     return (
