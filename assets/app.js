@@ -53,7 +53,7 @@ const _range = {
     min: 32,
     max: 126,
     usePreset: true,
-    chars: '.acnestudios#',
+    chars: '.:+ACNESTUDIOS#@=*%.',
 };
 
 const _posterize = {
