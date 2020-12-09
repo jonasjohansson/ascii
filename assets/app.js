@@ -137,6 +137,11 @@ function draw() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
+    // if (w > h) {
+    //     resizeCanvas(windowWidth, windowWidth * aspectRatio);
+    // } else {
+    //     resizeCanvas(windowHeight * aspectRatio, windowHeight);
+    // }
 }
 
 window.onload = function () {
