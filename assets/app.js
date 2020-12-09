@@ -1,5 +1,9 @@
 var cnv, gfx, capture, tween;
 
+var scaleRatio = window.innerWidth / screen.width;
+
+if (scaleRatio < 1) scaleRatio *= 1 + scaleRatio * 1.2;
+
 const ascii = {
     font: null,
     fontFile: 'mono.otf',
@@ -19,10 +23,10 @@ const _animation = {
 };
 
 const _display = {
-    w: 80,
-    h: 80,
+    w: Math.round(80 * scaleRatio),
+    h: Math.round(80 * scaleRatio),
     min: 1,
-    max: 160,
+    max: 120,
     density: 2,
     invert: false,
     blendMode: 'normal',
@@ -122,6 +126,7 @@ function setup() {
             document.body.classList.add('animate');
         },
     });
+    resizeCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
@@ -136,12 +141,9 @@ function draw() {
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-    // if (w > h) {
-    //     resizeCanvas(windowWidth, windowWidth * aspectRatio);
-    // } else {
-    //     resizeCanvas(windowHeight * aspectRatio, windowHeight);
-    // }
+    if (windowWidth >= w && windowHeight >= h) {
+        resizeCanvas(windowWidth, windowHeight);
+    }
 }
 
 window.onload = function () {
