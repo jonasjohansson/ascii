@@ -149,6 +149,15 @@ window.onload = function () {
 };
 
 function captureImage(el) {
+    // htmlToImage.toJpeg(el, { quality: 0.7 }).then(function (dataUrl) {
+    //     loadImage(dataUrl, (img) => {
+    //         capture = img;
+    //         updateVars();
+    //         setup();
+    //         startUI();
+    //     });
+    // });
+
     domtoimage.toPng(el).then(function (dataUrl) {
         domtoimage.toPng(el).then(function (dataUrl) {
             loadImage(dataUrl, (img) => {
