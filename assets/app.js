@@ -1,14 +1,12 @@
 var cnv, gfx, capture, tween;
 
-var scaleRatio = window.innerWidth / screen.width;
-
-if (scaleRatio < 1) scaleRatio *= 1 + scaleRatio * 1.2;
-
 const ascii = {
     font: null,
     fontFile: 'mono.otf',
     fontSize: 12,
     el: null,
+    sourceEl: null,
+    sourceId: 'ascii-landing-page',
 };
 
 const _animation = {
@@ -19,14 +17,14 @@ const _animation = {
     ease: 'sine.InOut',
     min: 0,
     max: 10,
-    repeat: 1,
+    repeat: 0,
 };
 
 const _display = {
-    w: Math.round(80 * scaleRatio),
-    h: Math.round(80 * scaleRatio),
+    w: 80,
+    h: 80,
     min: 1,
-    max: 120,
+    max: 80,
     density: 2,
     invert: false,
     blendMode: 'normal',
@@ -126,7 +124,6 @@ function setup() {
             document.body.classList.add('animate');
         },
     });
-    resizeCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
@@ -141,15 +138,14 @@ function draw() {
 }
 
 function windowResized() {
-    if (windowWidth >= w && windowHeight >= h) {
-        resizeCanvas(windowWidth, windowHeight);
-    }
+    resizeCanvas(windowWidth, windowHeight);
 }
 
 window.onload = function () {
     document.body.classList.add('show');
     ascii.el = document.getElementById('ascii');
-    captureImage(document.getElementById('ascii-landing-page'));
+    ascii.sourceEl = document.getElementById(ascii.sourceId);
+    captureImage(ascii.sourceEl);
 };
 
 function captureImage(el) {
@@ -290,7 +286,7 @@ function startUI() {
         _animation.timer = 0;
         tween.invalidate().restart();
         updateVars();
-        captureImage(document.getElementById('root'));
+        captureImage(ascii.sourceEl);
         setup();
     });
 }
