@@ -306,7 +306,7 @@ const updateVars = () => {
     _animation.repeat = PARAMS.animationRepeat;
     ascii.el.style.mixBlendMode = PARAMS.displayBlendMode;
     ascii.el.style.animationDelay = PARAMS.animationDelay + 's';
-    ascii.el.style.animationDuration = PARAMS.animationDuration + 's';
+    ascii.el.style.animationDuration = _animation.transitionDuration + 's';
 };
 
 function isMobileDevice() {
