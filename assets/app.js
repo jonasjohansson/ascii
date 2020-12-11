@@ -11,7 +11,7 @@ const ascii = {
 
 const _animation = {
     timer: 0,
-    duration: 6,
+    duration: 4,
     transitionDuration: 0.5,
     delay: 0.5,
     ease: 'sine.InOut',
@@ -145,7 +145,9 @@ window.onload = function () {
     document.body.classList.add('show');
     ascii.el = document.getElementById('ascii');
     ascii.sourceEl = document.getElementById(ascii.sourceId);
-    captureImage(ascii.sourceEl);
+    setTimeout(function(){
+        captureImage(ascii.sourceEl);
+    },100);
 };
 
 function captureImage(el) {
@@ -158,13 +160,17 @@ function captureImage(el) {
     //     });
     // });
 
-    domtoimage.toPng(el).then(function (dataUrl) {
-        domtoimage.toPng(el).then(function (dataUrl) {
+    domtoimage.toJpeg(el).then(function (dataUrl) {
+        domtoimage.toJpeg(el).then(function (dataUrl) {
             loadImage(dataUrl, (img) => {
                 capture = img;
                 updateVars();
                 setup();
                 startUI();
+                // var link = document.createElement('a');
+                // link.download = 'my-image-name.jpeg';
+                // link.href = dataUrl;
+                // link.click();
             });
         });
     });
