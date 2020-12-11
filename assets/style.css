@@ -68,7 +68,7 @@ img {
 
 .animate #ascii {
     animation-name: fade;
-    animation-duration: 4s;
+    animation-duration: 3s;
     animation-fill-mode: forwards;
 }
 @keyframes fade {

@@ -12,7 +12,7 @@ const ascii = {
 const _animation = {
     timer: 0,
     duration: 4,
-    transitionDuration: 0.5,
+    transitionDuration: 0,
     delay: 0.5,
     ease: 'sine.InOut',
     min: 0,
@@ -55,7 +55,7 @@ const _range = {
     min: 32,
     max: 126,
     usePreset: true,
-    chars: '.:+ACNESTUDIOS#@=*%.',
+    chars: '.:+ACNESTUDIOS#@=*%.            ',
 };
 
 const _posterize = {
