@@ -11,7 +11,7 @@ const ascii = {
 
 const _animation = {
     timer: 0,
-    duration: 5,
+    duration: 4,
     transitionDuration: 0.5,
     delay: 1,
     ease: 'sine.InOut',
