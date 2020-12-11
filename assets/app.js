@@ -11,9 +11,9 @@ const ascii = {
 
 const _animation = {
     timer: 0,
-    duration: 3,
-    transitionDuration: 0,
-    delay: 0.5,
+    duration: 5,
+    transitionDuration: 0.5,
+    delay: 1,
     ease: 'sine.InOut',
     min: 0,
     max: 10,
@@ -21,8 +21,8 @@ const _animation = {
 };
 
 const _display = {
-    w: 80,
-    h: 80,
+    w: 60,
+    h: 60,
     min: 1,
     max: 80,
     density: 2,
@@ -55,7 +55,7 @@ const _range = {
     min: 32,
     max: 126,
     usePreset: true,
-    chars: '.:+ACNESTUDIOS#@=*%.            ',
+    chars: ' .:+ACNESTUDIOS#@=*%.         ',
 };
 
 const _posterize = {
@@ -268,23 +268,23 @@ function startUI() {
         step: 1,
     });
 
-    f4.addInput(PARAMS, 'animationEase', {
-        label: 'ease',
-        options: {
-            sine: 'sine',
-            sineIn: 'sine.in',
-            sineOut: 'sine.out',
-            sineInOut: 'sine.inOut',
-            expo: 'expo',
-            expoIn: 'expo.in',
-            expoOut: 'expo.out',
-            expoInOut: 'expo.inOut',
-            circ: 'circ',
-            circIn: 'circ.in',
-            circOut: 'circ.out',
-            circInOut: 'circ.inOut',
-        },
-    });
+    // f4.addInput(PARAMS, 'animationEase', {
+    //     label: 'ease',
+    //     options: {
+    //         sine: 'sine',
+    //         sineIn: 'sine.in',
+    //         sineOut: 'sine.out',
+    //         sineInOut: 'sine.inOut',
+    //         expo: 'expo',
+    //         expoIn: 'expo.in',
+    //         expoOut: 'expo.out',
+    //         expoInOut: 'expo.inOut',
+    //         circ: 'circ',
+    //         circIn: 'circ.in',
+    //         circOut: 'circ.out',
+    //         circInOut: 'circ.inOut',
+    //     },
+    // });
 
     f4.addInput(PARAMS, 'animationTransitionDuration', {
         label: 'transition',
